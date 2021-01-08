@@ -105,7 +105,7 @@ function NewCard(props) {
               </Typography>
             </Grid>
             <Grid item xs>
-              <NavigationIcon style={{ transform: props.windDirRot }} />
+              <NavigationIcon style={{ transform: props.windDir }} />
             </Grid>
           </Grid>
         </Grid>
