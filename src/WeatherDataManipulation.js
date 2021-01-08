@@ -32,7 +32,7 @@ function WeatherDataManipulation(props) {
   ];
   const month = months[day.getMonth(day)];
   const date = day.getDate(day);
-  const monthDate = date + " " + month;
+  const monthDate = month + " " + date;
   const icon = `http://openweathermap.org/img/wn/${props.icon}@2x.png`;
   const description =
     props.detailedDesc[0].toUpperCase() +

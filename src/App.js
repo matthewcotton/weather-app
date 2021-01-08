@@ -66,6 +66,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <MyNav />
+        <br />
         <Title loadingStatus={this.state.loading} />
         <LocationBlock locationData={this.state.location} />
         <SevenDayCards weatherData={this.state.weather} />
