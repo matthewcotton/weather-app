@@ -25,7 +25,10 @@ function NewCard(props) {
     "Saturday",
   ];
   const day = new Date(parseInt(props.dateTime) * 1000);
-  const nameDay = days[day.getDay(day)];
+  const today = new Date(Date.now())
+  let nameDay = days[day.getDay(day)];
+  const todayName = days[today.getDay(today)];
+  nameDay = nameDay === todayName ? "Today" : nameDay;
   const months = [
     "January",
     "Febuary",
