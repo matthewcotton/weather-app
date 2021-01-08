@@ -15,44 +15,44 @@ const useStyles = makeStyles((theme) => ({
 
 function NewCard(props) {
   const classes = useStyles();
-  const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const day = new Date(parseInt(props.dateTime) * 1000);
-  const today = new Date(Date.now())
-  let nameDay = days[day.getDay(day)];
-  const todayName = days[today.getDay(today)];
-  nameDay = nameDay === todayName ? "Today" : nameDay;
-  const months = [
-    "January",
-    "Febuary",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  const month = months[day.getMonth(day)];
-  const date = day.getDate(day);
-  const icon = `http://openweathermap.org/img/wn/${props.icon}@2x.png`;
-  const description =
-    props.detailedDesc[0].toUpperCase() +
-    props.detailedDesc.slice(1, props.detailedDesc.length);
-  const maxTemp = Math.round(props.maxTemp) + "°C";
-  const minTemp = Math.round(props.minTemp) + "°C";
-  const windSpeed = Math.round(props.windSpeed * 10) / 10 + "m/s";
-  const windDirRot = String("rotate(" + props.windDir + "deg)");
+  // const days = [
+  //   "Sunday",
+  //   "Monday",
+  //   "Tuesday",
+  //   "Wednesday",
+  //   "Thursday",
+  //   "Friday",
+  //   "Saturday",
+  // ];
+  // const day = new Date(parseInt(props.dateTime) * 1000);
+  // const today = new Date(Date.now())
+  // let nameDay = days[day.getDay(day)];
+  // const todayName = days[today.getDay(today)];
+  // nameDay = nameDay === todayName ? "Today" : nameDay;
+  // const months = [
+  //   "January",
+  //   "Febuary",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December",
+  // ];
+  // const month = months[day.getMonth(day)];
+  // const date = day.getDate(day);
+  // const icon = `http://openweathermap.org/img/wn/${props.icon}@2x.png`;
+  // const description =
+  //   props.detailedDesc[0].toUpperCase() +
+  //   props.detailedDesc.slice(1, props.detailedDesc.length);
+  // const maxTemp = Math.round(props.maxTemp) + "°C";
+  // const minTemp = Math.round(props.minTemp) + "°C";
+  // const windSpeed = Math.round(props.windSpeed * 10) / 10 + "m/s";
+  // const windDirRot = String("rotate(" + props.windDir + "deg)");
 
   return (
     <Grid item xs={11} sm={6} md={4} lg={3} xl={2}>
@@ -68,17 +68,17 @@ function NewCard(props) {
           >
             <Grid item xs>
               <Typography variant="h5" gutterBottom>
-                {nameDay}
+                {props.dayName}
               </Typography>
             </Grid>
             <Grid item xs>
               <Typography variant="body2" gutterBottom>
-                {date + " " + month}
+                {props.monthDate}
               </Typography>
             </Grid>
             <Grid item xs>
               <Typography variant="body1" gutterBottom>
-                {description}
+                {props.detailedDesc}
               </Typography>
             </Grid>
           </Grid>
@@ -86,8 +86,8 @@ function NewCard(props) {
             <Grid item xs={8}>
               <img
                 className="weather-icon"
-                src={icon}
-                alt={"Icon for " + props.description}
+                src={props.icon}
+                alt={"Icon for " + props.detailedDesc}
               />
             </Grid>
           </Grid>
@@ -101,7 +101,7 @@ function NewCard(props) {
             </Grid>
             <Grid item xs>
               <Typography variant="body1" gutterBottom>
-                {minTemp}
+                {props.minTemp}
               </Typography>
             </Grid>
           </Grid>
@@ -113,7 +113,7 @@ function NewCard(props) {
             </Grid>
             <Grid item xs>
               <Typography variant="body1" gutterBottom>
-                {maxTemp}
+                {props.maxTemp}
               </Typography>
             </Grid>
           </Grid>
@@ -127,7 +127,7 @@ function NewCard(props) {
             </Grid>
             <Grid item xs>
               <Typography variant="body1" gutterBottom>
-                {windSpeed}
+                {props.windSpeed}
               </Typography>
             </Grid>
           </Grid>
@@ -143,7 +143,7 @@ function NewCard(props) {
               </Typography>
             </Grid>
             <Grid item xs>
-              <NavigationIcon style={{ transform: windDirRot }} />
+              <NavigationIcon style={{ transform: props.windDirRot }} />
             </Grid>
           </Grid>
         </Grid>

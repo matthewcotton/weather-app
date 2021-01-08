@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import NewCard from "./NewCard";
+import WeatherDataManipulation from "./WeatherDataManipulation";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -15,8 +15,8 @@ function NewWeatherCard(props) {
   return (
     <div className={classes.root} style={{ padding: 15 }}>
       <Grid container spacing={3} justify="center">
-      {props.weatherData.slice(0, 7).map((day, i) => (
-          <NewCard
+        {props.weatherData.slice(0, 7).map((day, i) => (
+          <WeatherDataManipulation
             key={i}
             dateTime={day.dt}
             icon={day.weather[0].icon}
