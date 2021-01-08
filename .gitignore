@@ -23,4 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 
 # Api Keys
-/src/apiKey.js
+/src/apiKeyOpenWeatherMap.js
+/src/apiKeyGeo.js

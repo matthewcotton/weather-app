@@ -1,7 +1,7 @@
 import axios from "axios";
-import apiKeyOpenWeatherMap from "./apiKeyOpenWeatherMap";
+import apiKeyGeo from "./apiKeyGeo";
 
-export class WeatherApiClient {
+export class GeoApiClient {
   status(response) {
     if (response.status >= 200 && response.status < 300) {
       return Promise.resolve(response);
@@ -21,12 +21,17 @@ export class WeatherApiClient {
       });
   }
 
-  getWeather() {
+  getGeoRev() {
+    // Scarcroft
     let lat = "53.866291";
     let lon = "-1.458470";
-    let exclude = "minutely,hourly,alerts";
+    // Meadowcroft
+    // let lat = "52.97015220484259";
+    // let lon = "-2.69896787467237";
     return this.getRequest(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=${exclude}&units=metric&appid=${apiKeyOpenWeatherMap()}`
+      `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lon}&key=${apiKeyGeo()}`
     );
   }
+
+  getGeoFwd() {}
 }

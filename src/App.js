@@ -1,12 +1,12 @@
 import React from "react";
+import { WeatherApiClient } from "./WeatherApiClient";
+import { GeoApiClient } from "./GeoApiClient";
 import SevenDayCards from "./SevenDayCards";
 import MyNav from "./MyNav";
+import Title from "./Title";
+import LocationBlock from "./LocationBlock";
 import "./App.css";
 import "fontsource-roboto";
-import { WeatherApiClient } from "./WeatherApiClient";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 
 class App extends React.Component {
   constructor(props) {
@@ -15,8 +15,22 @@ class App extends React.Component {
       weather: [],
       loading: "",
       fetching: false, // Remove if I don't use this variable
+      location: [],
     };
     this.weatherApiClient = new WeatherApiClient();
+    this.geoApiClient = new GeoApiClient();
+  }
+
+  fetchLocation() {
+    this.geoApiClient
+    .getGeoRev()
+    .then((response) => this.updateLocation(response.data.results[0]))
+  }
+
+  updateLocation(location) {
+    this.setState({
+      location,
+    })
   }
 
   fetchWeather() {
@@ -36,34 +50,24 @@ class App extends React.Component {
       });
   }
 
-  updateWeather(response) {
+  updateWeather(weather) {
     this.setState({
-      weather: response,
+      weather,
     });
   }
 
   componentDidMount() {
     this.fetchWeather();
+    this.fetchLocation();
   }
 
   render() {
+    console.log(this.state.location);
     return (
       <div className="App">
         <MyNav />
-        <Grid container>
-          <Grid item xs={12}>
-            <Box textAlign="center">
-              <Typography variant="h2">7 Day Weather Forecast</Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12}>
-            <Box textAlign="center">
-              <Typography variant="h5" gutterBottom>
-                {this.state.loading}
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
+        <Title loadingStatus={this.state.loading} />
+        <LocationBlock locationData={this.state.location} />
         <SevenDayCards weatherData={this.state.weather} />
       </div>
     );
