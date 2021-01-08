@@ -1,6 +1,6 @@
 import React from "react";
 import SevenDayCards from "./SevenDayCards";
-// import CssBaseline from "@material-ui/core/CssBaseline"; // Is this useful?
+import MyNav from "./MyNav";
 import "./App.css";
 import "fontsource-roboto";
 import { WeatherApiClient } from "./WeatherApiClient";
@@ -49,6 +49,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <MyNav />
         <Grid container>
           <Grid item xs={12}>
             <Box textAlign="center">
