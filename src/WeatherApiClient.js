@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiKeyOpenWeatherMap from "./apiKey";
 
 export class WeatherApiClient {
   status(response) {
@@ -23,7 +24,7 @@ export class WeatherApiClient {
   getWeather() {
     let lat = "53.866291";
     let lon = "-1.458470";
-    let apiKey = "cf99e76fb15ace081d4cd3a0ee7b2104";
+    let apiKey = apiKeyOpenWeatherMap();
     let exclude = "minutely,hourly,alerts";
     return this.getRequest(
       `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=${exclude}&units=metric&appid=${apiKey}`
