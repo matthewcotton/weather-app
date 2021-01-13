@@ -1,6 +1,7 @@
 import React from "react";
 import { WeatherApiClient } from "./WeatherApiClient";
 import { GeoApiClient } from "./GeoApiClient";
+import { weatherDataProcessing } from "./weatherDataProcessing";
 import SevenDayCards from "./SevenDayCards";
 import MyNav from "./MyNav";
 import Title from "./Title";
@@ -8,60 +9,48 @@ import LocationBlock from "./LocationBlock";
 import Grid from "@material-ui/core/Grid";
 import "./App.css";
 import "fontsource-roboto";
+import toastr from "toastr";
+import "toastr/build/toastr.min.css";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      weather: [],
+      weatherData: [],
+      weatherInfo: [],
+      locationData: [],
       loading: "",
-      location: [],
       placename: "Leeds", // Default is Leeds city centre
-      lat: "", 
-      long: "",
+      // lat: "",
+      // long: "",
     };
     this.weatherApiClient = new WeatherApiClient();
     this.geoApiClient = new GeoApiClient();
-  }
-
-  // Not currently used
-  fetchLocation() {
-    this.geoApiClient
-      .getGeoRev(this.state.lat, this.state.long)
-      .then((response) => this.updateLocation(response.data.results[0]));
-  }
-
-  // Not currently used
-  updateLocation(location) {
-    this.setState({
-      location,
-    });
+    toastr.options = {
+      closeButton: true,
+      positionClass: "toast-top-center",
+      timeOut: "3000",
+      extendedTimeOut: "1000",
+      showEasing: "swing",
+    };
+    toastr.clear();
   }
 
   searchLocation(placename) {
-    this.geoApiClient
-      .getGeoFwd(placename)
-      .then((response) => this.updateLatLong(response.data.results[0]));
-  }
-
-  updateLatLong(response) {
-    console.log(response)
-    this.setState({
-      location: response,
-      lat: response.geometry.lat,
-      long: response.geometry.lng,
-    });
-    this.fetchWeather(response.geometry.lat, response.geometry.lng);
-  }
-
-  fetchWeather(lat, long) {
     this.setState({
       loading: "loading...",
     });
 
-    this.weatherApiClient
-      .getWeather(lat, long)
-      .then((response) => this.updateWeather(response.data.daily))
+    this.geoApiClient
+      .getGeoFwd(placename)
+      .then((response) =>
+        response.data.results[0]
+          ? this.updateLocation(response.data.results[0])
+          : toastr.error(
+              `Location ${placename} could not be found`,
+              "No Search Results"
+            )
+      )
       .finally(() => {
         this.setState({
           loading: "",
@@ -69,9 +58,25 @@ class App extends React.Component {
       });
   }
 
-  updateWeather(weather) {
+  updateLocation(response) {
     this.setState({
-      weather,
+      locationData: response,
+      // lat: response.geometry.lat,
+      // long: response.geometry.lng,
+    });
+    this.fetchWeather(response.geometry.lat, response.geometry.lng);
+  }
+
+  fetchWeather(lat, long) {
+    this.weatherApiClient
+      .getWeather(lat, long)
+      .then((response) => this.updateWeather(response.data.daily));
+  }
+
+  updateWeather(weatherData) {
+    this.setState({
+      weatherData,
+      weatherInfo: weatherDataProcessing(weatherData),
     });
   }
 
@@ -90,13 +95,12 @@ class App extends React.Component {
           </Grid>
           <Grid item xs={12} md={6}>
             <LocationBlock
-              locationData={this.state.location}
+              locationData={this.state.locationData}
               onsubmit={(placename) => this.searchLocation(placename)}
             />
           </Grid>
         </Grid>
-
-        <SevenDayCards weatherData={this.state.weather} />
+        <SevenDayCards weatherInfo={this.state.weatherInfo} />
       </div>
     );
   }
