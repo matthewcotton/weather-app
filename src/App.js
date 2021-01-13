@@ -21,8 +21,6 @@ class App extends React.Component {
       locationData: [],
       loading: "",
       placename: "Leeds", // Default is Leeds city centre
-      // lat: "",
-      // long: "",
     };
     this.weatherApiClient = new WeatherApiClient();
     this.geoApiClient = new GeoApiClient();
@@ -61,8 +59,6 @@ class App extends React.Component {
   updateLocation(response) {
     this.setState({
       locationData: response,
-      // lat: response.geometry.lat,
-      // long: response.geometry.lng,
     });
     this.fetchWeather(response.geometry.lat, response.geometry.lng);
   }
