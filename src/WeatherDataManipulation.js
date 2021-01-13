@@ -44,7 +44,7 @@ function WeatherDataManipulation(props) {
 
   return (
     <NewCard
-      key={props.key}
+      key={props.keyId}
       dayName={nameDay}
       monthDate={monthDate}
       icon={icon}

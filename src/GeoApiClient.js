@@ -21,17 +21,15 @@ export class GeoApiClient {
       });
   }
 
-  getGeoRev() {
-    // Scarcroft
-    let lat = "53.866291";
-    let lon = "-1.458470";
-    // Meadowcroft
-    // let lat = "52.97015220484259";
-    // let lon = "-2.69896787467237";
+  getGeoRev(lat, lon) {
     return this.getRequest(
       `https://api.opencagedata.com/geocode/v1/json?q=${lat},${lon}&key=${apiKeyGeo()}`
     );
   }
 
-  getGeoFwd() {}
+  getGeoFwd(placename) {
+    return this.getRequest(
+      `https://api.opencagedata.com/geocode/v1/json?q=${placename}&key=${apiKeyGeo()}`
+    );
+  }
 }
