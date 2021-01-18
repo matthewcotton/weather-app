@@ -26,7 +26,7 @@ export function weatherDataProcessing(weatherData) {
   const todayName = days[today.getDay(today)];
   let weatherInfo = [];
 
-  weatherData.slice(0, 7).map((item, i) => {
+  weatherData.daily.slice(0, 7).map((item, i) => {
     // Set key
     const key = i;
     // Calculate name of the day
@@ -49,6 +49,36 @@ export function weatherDataProcessing(weatherData) {
     // Set wind speed and wind direction
     const windSpeed = Math.round(item.wind_speed * 10) / 10 + "m/s";
     const windDirRot = String("rotate(" + item.wind_deg + "deg)");
+
+    const hourlyWeather = [];
+    if (i < 2) {
+      const start = 0 + (i * 24);
+      const end = start + 24;
+      weatherData.hourly.slice(start, end).map((item, j) => {
+        const hour = j;
+        const temp = Math.round(item.temp) + "°C";
+        const feelsLike = Math.round(item.feels_like) + "°C";
+        const windSpeed = Math.round(item.wind_speed * 10) / 10 + "m/s";
+        const windDirRot = String("rotate(" + item.wind_deg + "deg)");
+        const description =
+          item.weather[0].description[0].toUpperCase() +
+          item.weather[0].description.slice(
+            1,
+            item.weather[0].description.length
+          );
+        const icon = `http://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`;
+        hourlyWeather.push({
+          hour,
+          temp,
+          feelsLike,
+          windSpeed,
+          windDirRot,
+          description,
+          icon,
+        });
+      });
+    }
+
     weatherInfo.push({
       key,
       nameDay,
@@ -58,7 +88,11 @@ export function weatherDataProcessing(weatherData) {
       maxTemp,
       minTemp,
       windSpeed,
+      windDeg: item.wind_deg + "°",
       windDirRot,
+      humidity: item.humidity + "%",
+      dewPoint: item.dew_point + "°C",
+      hourlyWeather,
     });
   });
 

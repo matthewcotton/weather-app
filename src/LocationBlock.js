@@ -58,11 +58,11 @@ function LocationBlock(props) {
           </Box>
         </Grid>
         <Grid item xs={12}>
-          <Box textAlign="left">
             <Typography className={classes.paper}>
-              Current Location:{" " + props.locationData.formatted}
+              {props.locationData.formatted
+                ? `${props.locationData.formatted}`
+                : ""}
             </Typography>
-          </Box>
         </Grid>
       </Grid>
     </div>

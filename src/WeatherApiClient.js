@@ -22,7 +22,7 @@ export class WeatherApiClient {
   }
 
   getWeather(lat, long) {
-    let exclude = "minutely,hourly,alerts";
+    let exclude = "current,minutely,alerts";
     return this.getRequest(
       `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=${exclude}&units=metric&appid=${apiKeyOpenWeatherMap()}`
     );

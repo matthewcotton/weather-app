@@ -5,6 +5,7 @@ import { weatherDataProcessing } from "./weatherDataProcessing";
 import SevenDayCards from "./SevenDayCards";
 import MyNav from "./MyNav";
 import Title from "./Title";
+import FullDayCard from "./FullDayCard";
 import LocationBlock from "./LocationBlock";
 import Grid from "@material-ui/core/Grid";
 import "./App.css";
@@ -20,8 +21,13 @@ class App extends React.Component {
       weatherInfo: [],
       locationData: [],
       loading: "",
-      placename: "Leeds", // Default is Leeds city centre
+      placename: "",
+      selectedDay: undefined,
+      visibilityDays: true,
+      visibilityHours: false,
     };
+    this.onDayClick = this.onDayClick.bind(this);
+    this.onXClick = this.onXClick.bind(this);
     this.weatherApiClient = new WeatherApiClient();
     this.geoApiClient = new GeoApiClient();
     toastr.options = {
@@ -32,6 +38,22 @@ class App extends React.Component {
       showEasing: "swing",
     };
     toastr.clear();
+  }
+
+  onDayClick(id) {
+    this.setState({
+      selectedDay: id,
+      visibilityDays: false,
+      visibilityHours: true,
+    });
+  }
+
+  onXClick() {
+    this.setState({
+      selectedDay: undefined,
+      visibilityDays: true,
+      visibilityHours: false,
+    });
   }
 
   searchLocation(placename) {
@@ -66,7 +88,7 @@ class App extends React.Component {
   fetchWeather(lat, long) {
     this.weatherApiClient
       .getWeather(lat, long)
-      .then((response) => this.updateWeather(response.data.daily));
+      .then((response) => this.updateWeather(response.data));
   }
 
   updateWeather(weatherData) {
@@ -74,10 +96,6 @@ class App extends React.Component {
       weatherData,
       weatherInfo: weatherDataProcessing(weatherData),
     });
-  }
-
-  componentDidMount() {
-    this.searchLocation(this.state.placename);
   }
 
   render() {
@@ -96,7 +114,20 @@ class App extends React.Component {
             />
           </Grid>
         </Grid>
-        <SevenDayCards weatherInfo={this.state.weatherInfo} />
+        {this.state.visibilityDays && (
+          <SevenDayCards
+            id="seven-day"
+            weatherInfo={this.state.weatherInfo}
+            onDayClick={this.onDayClick}
+          />
+        )}
+        {this.state.visibilityHours && (
+          <FullDayCard
+            id="full-day"
+            weatherInfo={this.state.weatherInfo[this.state.selectedDay]}
+            onXClick={this.onXClick}
+          />
+        )}
       </div>
     );
   }
